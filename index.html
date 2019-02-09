@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<!--html manifest="application.appcache"-->
+<html>
+
+<meta charset="UTF-8">
+<link rel="stylesheet" href="js/font-awesome-4.3.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="js/leaflet-0.7.3/leaflet.css"/> 
+<link rel="stylesheet" href="js/jquery-ui-1.12.1/jquery-ui.min.css"/> 
+
+<style>
+body		{overflow-x:hidden;overflow-y:hidden;padding:0% 2.5%}
+
+body {
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' version='1.1' height='75px' width='120px'><text x='0' y='15' fill='rgba(255,255,255,.1)' font-family='arial' font-size='15'>demo</text></svg>");
+}
+
+.leaflet-clickable {
+	cursor: crosshair;
+	}
+.leaflet-container {
+	cursor: crosshair;
+	cursor: -webkit-crosshair;
+	cursor:    -moz-crosshair;
+	}
+.leaflet-popup-pane,
+.leaflet-control {
+	cursor: auto;
+	}
+.leaflet-dragging .leaflet-container,
+.leaflet-dragging .leaflet-clickable {
+	cursor: crosshair;
+	}
+
+#credits:hover
+{
+	color:yellow
+}
+#display_credits
+{
+	color:white;
+	font-size:smaller
+}
+
+body, .dialogClass
+{
+	color:rgb(255,255,255) !important;
+	font-family:Lucida Sans, "Arial", Helvetica, sans-serif; 
+	background:rgb(16,46,66); 
+}
+.coord
+{
+	text-align:center;
+	height:15%;
+	padding: 1em;
+}
+.coord_caption
+{
+	height:10%;
+	padding-top:    .25em;
+	padding-bottom: .25em;
+	text-align: left;
+	font-weight: bold;
+}
+.emptyicon
+{
+	background:transparent;
+	border:none;
+}
+.yellowicon
+{
+	background:transparent;
+	border:none;
+	color:yellow;
+	font-weight:bold
+}
+
+.boldicon
+{
+	background:transparent;
+	border:none;
+	color:white;
+	font-weight:bold
+}
+.colorblack
+{
+	color:black
+}
+
+.colorwhite
+{
+	color:white
+}
+#go_convert:hover
+{
+opacity:.75
+}
+input
+{
+	  background: rgb(16, 46, 66);
+    border: 1px solid white;
+    color: rgba(255,255,255,.75);
+    /* font-family: Lucida sans-serif; */
+    padding: 5px;
+	margin-right:20px;
+}
+::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+    color: rgba(255,255,255,.75);
+    opacity: 1; /* Firefox */
+}
+
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+    color: rgba(255,255,255,.75);
+}
+
+::-ms-input-placeholder { /* Microsoft Edge */
+    color: rgba(255,255,255,.75);
+}
+</style>
+
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+    </head>
+    <body>
+	<div id='maindiv' style='display:none; color:white'>
+	<br>
+	<center>
+	<table>
+	<tr>
+		<td><b>WGS84</b></td>
+	</tr>
+	
+	<tr>
+		<td>Latitude </td><td><input  id='WGS84_LAT'></td><td>Longitude</td><td><input id='WGS84_LON' placeholder = 'ex : 4,392 ou 4°30 40,32"'></td>
+	</tr>
+	<tr>
+		<td colspan="4" style="text-align:center"><br><i>ou</i></td>
+	</tr>
+ 	<tr>
+	<td>
+	
+	<br><b>Lambert 72</b></td>
+	</tr>
+		<tr>
+			<td>X</td><td><input id='LAM72_X' placeholder='ex: 150000'></td><td>Y</td><td><input id='LAM72_Y' placeholder='ex : 140000'></td>
+		</tr>
+	<tr>
+	<td colspan="4" style="text-align:center"><br><br><span id='go_convert' style='background:red; padding:10px; border-radius:5px'>Convertir</span><br><br><br></td>
+	</tr>
+		<tr style='color:yellow'>
+			<td>Zone</td><td><span id='RESULT_GRID_PLANCHE'></td><td>Carré</td><td><span id='RESULT_GRID_SQUARE'></td>
+		</tr>
+		<tr>
+			<td>Latitude (DMS)</td><td><span id='RESULT_WGS84_DMS_LAT'></td><td>Longitude (DMS)</td><td><span id='RESULT_WGS84_DMS_LON'></td>
+		</tr>
+		<tr>
+			<td>Latitude (DD)</td><td><span id='RESULT_WGS84_DD_LAT'></td><td>Longitude (DD)</td><td><span id='RESULT_WGS84_DD_LON'></td>
+		</tr>
+		<tr>
+			<td>Latitude (DMD)</td><td><span id='RESULT_WGS84_DMD_LAT'></td><td>Longitude (DD)</td><td><span id='RESULT_WGS84_DMD_LON'></td>
+		</tr>
+		<tr>
+			<td>X (Lambert 72)</td><td><span id='RESULT_LAM72_X'></td><td>Y (Lambert 72)</td><td><span id='RESULT_LAM72_Y'></td>
+		</tr>
+		<tr>
+			<td>X (Lambert 2008)</td><td><span id='RESULT_LAM08_X'></td><td>Y (Lambert 2008)</td><td><span id='RESULT_LAM08_Y'></td>
+		</tr>
+		<tr>
+			<td>MGRS (UTM)</td><td><span id='RESULT_UTM'></td><td> </td>
+		</tr>
+	 
+	</table>
+ </center>
+ 	<center><span style='font-size:x-small; color:lightgray'><br><br>Made by <a href='www.my-poppy.eu' style='color:lightgray'>Poppy</a>, 2018 | <span id='credits'>Credits</span> | Proof of concept, based on CRC-W maps 26/03/2018 : best effort service -- <span style='color:red'>no warranty of any kind</span> | No tracking, GDPR applies.<br><a  style='color:lightgray' href='https://docs.my-poppy.eu/privacy_poppy.html'>Privacy policy</a>. Feedback welcome : <a href='mailto:info@my-poppy.eu' style='color:lightgray'>info@my-poppy.eu</a>. </span></center>
+ 	</div>
+
+	<div id='display_credits' style='display:none'>
+
+		<br>Libraries:
+		<ul>
+			<li>font-awesome-4.3.0
+			<li>jquery-ui-1.12.1
+			<li>leaflet-0.7.3
+			<li>Proj4Leaflet-0.7.0
+			<li>jquery-2.1.1
+			<li>mgrs-1.0.0
+			<li>jquery.dialogextend-2.0.4
+		</ul>
+
+		<br>Data:
+		<ul>
+			<li>map data : Walloon Region
+		</ul>
+
+		<br>Project partners:
+		<ul>
+			<li>Province de Liège (project coordination)
+			<li>Centre Régional de Crise de Wallonie (offline map & grid definition)		
+			<li>Fire brigades of the Belgian Fagnes
+			<li>Poppy (online map)
+		</ul>
+
+		<br>Original idea of conversion:
+		<ul>
+			<li>Yvan Barbier, UMons, DEMNA (http://zoologie.umons.ac.be/tc)
+		</ul>
+
+		<br>Contribution of this project:
+		<ul>
+			<li>online map
+			<li>open source
+			<li>large map
+			<li>grid of the emergency plan of the Belgian Fagnes
+		</ul>	
+	</div>
+
+	<div id="map2" style="position:fixed; bottom:0;left:0;right:0;top:0"></div>
+
+	<script src="js/leaflet-0.7.3/leaflet.js"></script> 
+	<script src="js/Proj4Leaflet-0.7.0/lib/proj4-compressed.js"></script>
+	<script src="js/Proj4Leaflet-0.7.0/src/proj4leaflet.js"></script>
+	<script src="js/togeojson-0.16.0/togeojson.js"></script>
+	<script src="js/Leaflet.FileLayer-0.6.0/leaflet.filelayer.js"></script>
+
+
+	<script src="js/mgrs-1.0.0.js"></script>
+	<script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>
+	<script type="text/javascript" src="js/jquery-ui-1.12.1/jquery-ui.min.js"></script>
+	<script type="text/javascript" src="js/jquery.dialogextend-2.0.4.min.js"></script>
+        <script type="text/javascript" src="js/index.js?a=26"></script>
+
+
+
+    </body>
+</html>
+
+
+
