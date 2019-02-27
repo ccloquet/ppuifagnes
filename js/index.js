@@ -15,7 +15,7 @@ var maps =
 	est:		{id:'est', 	 filename:'Carte zone Est PPUI Haute Fagne.jpg', 		name:'Est', 		x0y0 : [273000, 136000], xlabels:xlabels,   ylabels:ylabels,   dx:500, dy:500},
 	malchamps:	{id:'malchamps', filename:'Carte zone Malchamps PPUI Haute Fagne.jpg', 		name:'Malchamps', 	x0y0 : [255000, 132000], xlabels:xlabels_s, ylabels:ylabels_s, dx:500, dy:500},
 	nord:		{id:'nord', 	 filename:'Carte zone Nord PPUI Haute Fagne.jpg', 		name:'Nord', 		x0y0 : [269500, 150000], xlabels:xlabels,   ylabels:ylabels,   dx:500, dy:500},
-	enduro:		{id:'enduro', 	 filename:'Carte zone Enduro', 					name:'Enduro', 		x0y0 : [244800, 133000], xlabels:xlabels_t, ylabels:ylabels_t, dx:400, dy:400}
+	//enduro:		{id:'enduro', 	 filename:'Carte zone Enduro', 					name:'Enduro', 		x0y0 : [244800, 133000], xlabels:xlabels_t, ylabels:ylabels_t, dx:400, dy:400}
 }
 
 
